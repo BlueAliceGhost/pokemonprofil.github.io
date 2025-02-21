@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Profil</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="titreProfil"></h1>
+        <p id="descriptionProfil"></p>
+        
+        <label for="likert">Je trouve que cette description me correspond :</label>
+        <div class="likert-scale">
+            <span>0</span>
+            <label>0<input type="radio" name="likert" value="0"></label>
+            <label>1<input type="radio" name="likert" value="1"></label>
+            <label>2<input type="radio" name="likert" value="2"></label>
+            <label>3<input type="radio" name="likert" value="3"></label>
+            <label>4<input type="radio" name="likert" value="4"></label>
+            <label>5<input type="radio" name="likert" value="5" checked></label>
+            <label>6<input type="radio" name="likert" value="6"></label>
+            <label>7<input type="radio" name="likert" value="7"></label>
+            <label>8<input type="radio" name="likert" value="8"></label>
+            <label>9<input type="radio" name="likert" value="9"></label>
+            <label>10<input type="radio" name="likert" value="10"></label>
+            <span>10</span>
+        </div>
+        
+        <br>
+        <button id="validateBtn">Valider</button>
+    </div>
+
+    <script>
+        const descriptions = {
+            "bulbizarre": "Vous êtes une personne calme et réfléchie, qui aime prendre son temps avant de prendre une décision. Vous avez un grand sens de l'observation et êtes souvent à l'écoute des autres.",
+            "salameche": "Vous êtes passionné et ambitieux. Vous aimez relever les défis et aller de l'avant, parfois sans trop réfléchir. Votre énergie est communicative et vous inspirez les autres.",
+            "carapuce": "Vous êtes stratégique et posé. Vous analysez les situations avant d'agir et vous avez une grande capacité d'adaptation. Vous savez garder votre sang-froid même sous pression."
+        };
+
+        const starter = localStorage.getItem("starterChoisi") || "Néant";
+        const condition = localStorage.getItem("condition") || "Contrôle";
+        document.getElementById("titreProfil").innerText = `Vous avez choisi ${starter}, voici votre profil de personnalité`;
+        document.getElementById("descriptionProfil").innerText = descriptions[starter] || "Description non disponible.";
+
+        document.getElementById("validateBtn").addEventListener("click", function() {
+            const selected = document.querySelector('input[name="likert"]:checked');
+            if (selected) {
+                const score = selected.value;
+                localStorage.setItem("likertScore", score);
+
+                // Envoi des données à Google Sheets
+                fetch("https://script.google.com/macros/s/AKfycbyxvwuv3x07knRSh2Abx6KD0vPQgqUWb__Ib6X81qTtaM4iXypQfDG1WktF2vJ94VcR/exec", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						consentement: "Oui",
+						condition: condition,
+						starter: starter,
+						score: score
+					})
+				})
+				.then(response => response.text())
+				.then(data => {
+					console.log("Réponse de Google Apps Script:", data);
+					if (data.includes("success")) {
+						window.location.href = "explication.html";
+					} else {
+						alert("Problème avec l'envoi des données. Réponse reçue : " + data);
+					}
+				})
+				.catch(error => {
+					console.error("Erreur lors de l'envoi des données:", error);
+					alert("Une erreur réseau est survenue, regarde la console.");
+				});
+
+            } else {
+                alert("Veuillez sélectionner une valeur avant de valider.");
+            }
+        });
+    </script>
+</body>
+</html>

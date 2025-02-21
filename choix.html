@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choix du Starter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Choisissez votre Pokémon Starter</h1>
+        <div class="starters">
+            <div class="starter" id="Bulbizarre">
+                <img src="images/bulbizarre.png" alt="Bulbizarre">
+				<img src="images/bulbizarreElement.png" alt="Plante">
+                <p class="description">Bulbizarre passe son temps à faire la sieste sous le soleil. Il y a une graine sur son dos. Il absorbe les rayons du soleil pour faire doucement pousser la graine. Elle grandit avec lui depuis sa naissance.</p>
+                <button onclick="choisirStarter('Bulbizarre')">Choisir</button>
+            </div>
+            <div class="starter" id="Salameche">
+                <img src="images/salameche.png" alt="Salamèche">
+				<img src="images/salamecheElement.png" alt="Feu">
+                <p class="description">La flamme qui brûle au bout de sa queue indique l’humeur de ce Pokémon. Elle vacille lorsque Salamèche est content. En revanche, lorsqu’il s’énerve, la flamme prend de l’importance et brûle plus ardemment. Si cette flamme s’éteint, la vie de ce Pokémon s’éteindra elle aussi.</p>
+                <button onclick="choisirStarter('Salameche')">Choisir</button>
+            </div>
+            <div class="starter" id="Carapuce">
+                <img src="images/carapuce.png" alt="Carapuce">
+				<img src="images/carapuceElement.png" alt="Eau">
+                <p class="description">La carapace de Carapuce ne sert pas qu’à le protéger. La forme ronde de sa carapace et ses rainures lui permettent d’améliorer son hydrodynamisme. Ce Pokémon nage extrêmement vite. Il se réfugie dans sa carapace et réplique en éclaboussant l’ennemi à la première occasion.</p>
+                <button onclick="choisirStarter('Carapuce')">Choisir</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function choisirStarter(starter) {
+            localStorage.setItem("starterChoisi", starter);
+            window.location.href = "profil.html";
+        }
+    </script>
+</body>
+</html>

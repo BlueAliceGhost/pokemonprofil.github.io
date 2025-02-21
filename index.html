@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étude Effet Barnum</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container" id="consent">
+        <h1>Consentement éclairé</h1>
+        <p id="consentText">[Insérez ici le texte de consentement]</p>
+        <input type="checkbox" id="consentCheck">Je déclare avoir lu et compris les conditions de participation.
+        <br>
+        <button id="consentButton" disabled>Valider</button>
+    </div>
+
+    <script>
+        document.getElementById("consentCheck").addEventListener("change", function() {
+            document.getElementById("consentButton").disabled = !this.checked;
+        });
+
+        document.getElementById("consentButton").addEventListener("click", function() {
+            window.location.href = "choix.html"; 
+        });
+    </script>
+</body>
+</html>

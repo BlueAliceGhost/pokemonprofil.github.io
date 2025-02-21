@@ -51,7 +51,7 @@
                 localStorage.setItem("likertScore", score);
 
                 // Envoi des données à Google Sheets
-                fetch("https://script.google.com/macros/s/AKfycbyxvwuv3x07knRSh2Abx6KD0vPQgqUWb__Ib6X81qTtaM4iXypQfDG1WktF2vJ94VcR/exec", {
+                fetch("https://script.google.com/macros/s/AKfycbyKLpsa5ktww_6CdBUrWaiLhU_U_j_wHWrq8RD2nMYA-WPm8SbSVeyeaIy3-3qO1LRf/exec", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({

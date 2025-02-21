@@ -63,29 +63,42 @@
     </div>
 
     <script>
-        // Récupérer le starter choisi depuis le localStorage
-        const starterChoisi = localStorage.getItem("starterChoisi");
-
-        // Vérifier si le starter est bien défini et le mettre à jour dans le titre
-        if (starterChoisi) {
-            // Mettre à jour le titre de la page
-            document.querySelector('h1').innerText = `Vous avez choisi ${starterChoisi}, voici votre profil de personnalité`;
-        }
-
-        // Activer le bouton "Valider" lorsqu'un choix est fait dans l'échelle de Likert
-        const radios = document.querySelectorAll('input[type="radio"]');
-        const button = document.getElementById('validate');
-
-        radios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                button.disabled = false;
-            });
-        });
-
         document.getElementById('validate').addEventListener('click', function() {
-            // Logic to save data (Google Apps Script) can be added here
-            window.location.href = "explication.html"; // Redirect to the final page or next step
-        });
+    const selected = document.querySelector('input[name="likert"]:checked');
+    if (!selected) {
+        alert("Veuillez sélectionner une valeur avant de valider.");
+        return;
+    }
+
+    const score = selected.value;
+    const starter = localStorage.getItem("starterChoisi") || "Néant";
+    const condition = localStorage.getItem("condition") || "Contrôle";
+
+    fetch("https://script.google.com/macros/s/AKfycbyxvwuv3x07knRSh2Abx6KD0vPQgqUWb__Ib6X81qTtaM4iXypQfDG1WktF2vJ94VcR/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            consentement: "Oui",
+            condition: condition,
+            starter: starter,
+            score: score
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Réponse de Google Apps Script:", data);
+        if (data.includes("success")) {
+            window.location.href = "explication.html"; // Redirection si succès
+        } else {
+            alert("Problème avec l'envoi des données. Réponse reçue : " + data);
+        }
+    })
+    .catch(error => {
+        console.error("Erreur lors de l'envoi des données:", error);
+        alert("Une erreur réseau est survenue, regarde la console.");
+    });
+});
+
     </script>
 
 </body>
